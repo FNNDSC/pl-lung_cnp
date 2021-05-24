@@ -1,5 +1,5 @@
 pl-lung_cnp
-================================
+===========
 
 .. image:: https://img.shields.io/docker/v/fnndsc/pl-lung_cnp?sort=semver
     :target: https://hub.docker.com/r/fnndsc/pl-lung_cnp
@@ -113,26 +113,23 @@ Run unit tests:
 Examples
 --------
 
-    Copy the embedded lung CT data to the ``out`` directory
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    # Here, files are copied as localuser
-    mkdir out && chmod 777 out
-    docker run --rm -u $(id -u)                                 \\
-        -v  $(pwd)/out:/outgoing                                \\
-        fnndsc/pl-lung_cnp lung_cnp                             \\
-        /outgoing
-
-    Copy a user specified directory to the ``out`` directory
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    # Here, files are copied as root
-    mkdir out && chmod 777 out
-    docker run --rm                                             \\
-        -v  $(pwd)/out:/outgoing                                \\
-        fnndsc/pl-lung_cnp lung_cnp                             \\
-        --dir /etc                                              \\
-        /outgoing
+Copy the embedded lung CT data to the ``out`` directory
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Here, files are copied as localuser
+mkdir out && chmod 777 out
+docker run --rm -u $(id -u)                                 \\
+    -v  $(pwd)/out:/outgoing                                \\
+    fnndsc/pl-lung_cnp lung_cnp                             \\
+    /outgoing
+Copy a user specified directory to the ``out`` directory
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Here, files are copied as root
+mkdir out && chmod 777 out
+docker run --rm                                             \\
+    -v  $(pwd)/out:/outgoing                                \\
+    fnndsc/pl-lung_cnp lung_cnp                             \\
+    --dir /etc                                              \\
+    /outgoing
 
 
 .. image:: https://raw.githubusercontent.com/FNNDSC/cookiecutter-chrisapp/master/doc/assets/badge/light.png
