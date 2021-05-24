@@ -23,7 +23,7 @@ This application houses a set of images that can be used in Normal/COVID/Pneumon
 Description
 -----------
 
-``lung_cnp`` is a ChRIS-based application that...
+``lung_cnp`` is a ChRIS-based application that simply copies a set of DICOM images to its output directory. The plugin is used as a convenient delivery vehicle containing images suitable for testing and further development.
 
 
 Usage
@@ -31,13 +31,16 @@ Usage
 
 .. code::
 
-    python lung_cnp.py
-        [-h|--help]
-        [--json] [--man] [--meta]
-        [--savejson <DIR>]
-        [-v|--verbosity <level>]
-        [--version]
-        <inputDir> <outputDir>
+        lung_cnp                                                        \
+            [--dir <dir>]                                               \
+            [-h] [--help]                                               \
+            [--json]                                                    \
+            [--man]                                                     \
+            [--meta]                                                    \
+            [--savejson <DIR>]                                          \
+            [-v <level>] [--verbosity <level>]                          \
+            [--version]                                                 \
+            <outputDir>
 
 
 Arguments
@@ -45,26 +48,31 @@ Arguments
 
 .. code::
 
-    [-h] [--help]
-    If specified, show help message and exit.
-    
-    [--json]
-    If specified, show json representation of app and exit.
-    
-    [--man]
-    If specified, print (this) man page and exit.
+        [--dir <dir>]
+        An optional override directory to copy to the <outputDir>.
+        Note, if run from a containerized version, this will copy
+        a directory from the *container* file system.
 
-    [--meta]
-    If specified, print plugin meta data and exit.
-    
-    [--savejson <DIR>] 
-    If specified, save json representation file to DIR and exit. 
-    
-    [-v <level>] [--verbosity <level>]
-    Verbosity level for app. Not used currently.
-    
-    [--version]
-    If specified, print version number and exit. 
+        [-h] [--help]
+        If specified, show help message and exit.
+
+        [--json]
+        If specified, show json representation of app and exit.
+
+        [--man]
+        If specified, print (this) man page and exit.
+
+        [--meta]
+        If specified, print plugin meta data and exit.
+
+        [--savejson <DIR>]
+        If specified, save json representation file to DIR and exit.
+
+        [-v <level>] [--verbosity <level>]
+        Verbosity level for app. Not used currently.
+
+        [--version]
+        If specified, print version number and exit.
 
 
 Getting inline help is:
@@ -82,9 +90,9 @@ You need to specify input and output directories using the `-v` flag to `docker 
 .. code:: bash
 
     docker run --rm -u $(id -u)                             \
-        -v $(pwd)/in:/incoming -v $(pwd)/out:/outgoing      \
-        fnndsc/pl-lung_cnp lung_cnp                        \
-        /incoming /outgoing
+         -v $(pwd)/out:/outgoing                            \
+        fnndsc/pl-lung_cnp lung_cnp                         \
+        /outgoing
 
 
 Development
@@ -105,7 +113,26 @@ Run unit tests:
 Examples
 --------
 
-Put some examples here!
+    Copy the embedded lung CT data to the ``out`` directory
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    # Here, files are copied as localuser
+    mkdir out && chmod 777 out
+    docker run --rm -u $(id -u)                                 \\
+        -v  $(pwd)/out:/outgoing                                \\
+        fnndsc/pl-lung_cnp lung_cnp                             \\
+        /outgoing
+
+    Copy a user specified directory to the ``out`` directory
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    # Here, files are copied as root
+    mkdir out && chmod 777 out
+    docker run --rm                                             \\
+        -v  $(pwd)/out:/outgoing                                \\
+        fnndsc/pl-lung_cnp lung_cnp                             \\
+        --dir /etc                                              \\
+        /outgoing
 
 
 .. image:: https://raw.githubusercontent.com/FNNDSC/cookiecutter-chrisapp/master/doc/assets/badge/light.png
