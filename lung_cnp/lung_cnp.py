@@ -13,6 +13,7 @@ from    chrisapp.base           import ChrisApp
 from    os                      import listdir
 from    os.path                 import isfile, join
 from    distutils.dir_util      import copy_tree
+import  shutil
 import  sys
 
 
@@ -39,6 +40,7 @@ Gstr_synopsis = """
     SYNOPSIS
 
         lung_cnp                                                        \\
+            [--file <onlyCopyThisFile>]                                 \\
             [--dir <dir>]                                               \\
             [-h] [--help]                                               \\
             [--json]                                                    \\
@@ -69,6 +71,11 @@ Gstr_synopsis = """
         DICOM images. In all other respects it is identical to ``pl-lungct``.
 
     ARGS
+
+        [--file <onlyCopyThisFile>]
+        If specified, only copy this specific file to the output directory.
+        This course assumes that <onlyCopyThisFile> exists in the container
+        <dir>.
 
         [--dir <dir>]
         An optional override directory to copy to the <outputDir>.
@@ -157,11 +164,19 @@ class Lung_cnp(ChrisApp):
         Use self.add_argument to specify a new app argument.
         """
         self.add_argument('--dir',
-                          dest          ='dir',
-                          type          = str,
-                          default       = '/usr/local/src/data/images',
-                          optional      = True,
-                          help          = 'directory override')
+            dest          ='dir',
+            type          = str,
+            default       = '/usr/local/src/data/images',
+            optional      = True,
+            help          = 'directory override')
+
+        self.add_argument('--file',
+            dest          ='file',
+            type          = str,
+            default       = '',
+            optional      = True,
+            help          = 'copy only a specific file')
+
 
     def run(self, options):
         """
@@ -174,7 +189,7 @@ class Lung_cnp(ChrisApp):
             print("%20s: %-40s" % (k, v))
         print("")
 
-        if len(options.dir):
+        if len(options.dir) and not len(options.file):
             print("Copying tree %s to %s..." % (options.dir, options.outputdir))
             l_file : list = [f for f in listdir(options.dir) if isfile(join(options.dir, f))]
             copy_tree(options.dir, options.outputdir)
@@ -182,6 +197,19 @@ class Lung_cnp(ChrisApp):
             for f in l_file:
                 print(f)
             sys.exit(0)
+        elif len(options.file):
+            print("Copying file %s/%s to %s/%s..." % (
+                options.dir,
+                options.file,
+                options.outputdir,
+                options.file
+            ))
+            if isfile(join(options.dir, options.file)):
+                str_filename    = join(options.dir, options.file)
+                shutil.copyfile(str_filename, join(options.outputdir, options.file))
+            else:
+                print("Invalid file: %s" % join(options.dir, options.file))
+                sys.exit(2)
         else:
             print("No directory specified and no copy performed.")
             sys.exit(1)
