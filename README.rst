@@ -32,6 +32,7 @@ Usage
 .. code::
 
         lung_cnp                                                        \
+            [--file <onlyCopyThisFile>]                                 \
             [--dir <dir>]                                               \
             [-h] [--help]                                               \
             [--json]                                                    \
@@ -47,6 +48,11 @@ Arguments
 ~~~~~~~~~
 
 .. code::
+
+        [--file <onlyCopyThisFile>]
+        If specified, only copy this specific file to the output directory.
+        This course assumes that <onlyCopyThisFile> exists in the container
+        <dir>.
 
         [--dir <dir>]
         An optional override directory to copy to the <outputDir>.
