@@ -17,13 +17,16 @@ pl-lung_cnp
 Abstract
 --------
 
-This application houses a set of images that can be used in Normal/COVID/Pneumonia testing of COVIDNET
+This application houses a set of images that can be used in Normal/COVID/Pneumonia testing of COVIDNET.
 
 
 Description
 -----------
 
 ``lung_cnp`` is a ChRIS-based application that simply copies a set of DICOM images to its output directory. The plugin is used as a convenient delivery vehicle containing images suitable for testing and further development.
+
+The default behaviour is to copy all the files in the internal/default <dir>
+
 
 
 Usage
