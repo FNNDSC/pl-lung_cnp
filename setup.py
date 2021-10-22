@@ -6,7 +6,7 @@ with open(path.join(path.dirname(path.abspath(__file__)), 'README.rst')) as f:
 
 setup(
     name             = 'lung_cnp',
-    version          = '1.1.0',
+    version          = '1.1.1',
     description      = 'This application houses a set of images that can be used in Normal/COVID/Pneumonia testing of COVIDNET',
     long_description = readme,
     author           = 'FNNDSC',
